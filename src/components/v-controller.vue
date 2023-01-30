@@ -1,14 +1,34 @@
 <template>
    <div class="control">
         <label for="text">добавить задачу</label>
-        <input id="text" type="text" class="text">
-        <button class="clear">очистить список</button>
+        <input v-model="text" @keypress="add" id="text" title="Нажми Enter чтобы добавить задачу" type="text" class="text">
+        <button class="clear" @click="clear">отчистить список</button>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'v-controller'
+  name: 'v-controller',
+  computed: {
+    text: {
+      get () {
+        return this.$store.state.todo.inputText
+      },
+      set (value) {
+        this.$store.commit('inputChange', value)
+      }
+    }
+  },
+  methods: {
+    add (e) {
+      if (e.code === 'Enter') {
+        this.$store.commit('add')
+      }
+    }
+  },
+  clear () {
+    this.$store.commit('clear')
+  }
 }
 </script>
 
